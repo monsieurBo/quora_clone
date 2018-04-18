@@ -1,0 +1,26 @@
+<html>
+
+  <head>
+
+    <title>Quora Clone</title>
+
+  </head>
+
+  <body>
+
+    <a href="/" style="text-decoration: none"><h1>Quora Clone</h1></a>
+
+    <a href="/questions/new">New Question</a>
+
+  	<% @questions.each do |q| %>
+    	<h3><%= q.title %></h3>
+  		<p><%= q.question %></p>
+  		<a href="/questions/<%=q.id%>">view</a>
+      <!-- <a href="/answers/<%=q.id%>">Answer</a> -->
+  		<a href="/questions/<%=q.id%>/delete">delete</a>
+		<% end %>
+    
+
+  </body>
+
+</html>

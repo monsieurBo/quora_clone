@@ -1,0 +1,48 @@
+<html>
+
+  <head>
+
+    <title>Quora Clone</title>
+
+  </head>
+
+  <body>
+
+    <a href="/" style="text-decoration: none"><h1>Quora Clone</h1></a>
+
+    <h3><%=@question.title%></h3>
+
+
+		<%=@question.question%><br><br/>
+		<a href="/questions/<%=@question.id%>/edit">Edit</a>
+		<a href="/answers/<%=@question.id%>/answer">Answer</a>
+
+<!-- left_joins(:votes).group(:id).order('COUNT(votes.answer_id)') -->
+
+		<%if @answers %>
+		<p><%= @answers.length %> Answers</p>
+		<hr>
+				<% @answers.left_joins(:votes).group(:id).order('COUNT(answer_id) DESC').each do | a | %>
+					<strong>Username</strong><br/>
+					<%= a.username %><%= a.created_at %><br/>
+
+					<strong>Answer</strong><br/>
+					<%=a.answer%><br/>
+					<% votes = Vote.where(answer_id: a.id) %>
+					<a href="/answers/<%=a.id%>/up">UP | <%=votes.count%></a>
+					<a href="/answers/<%=a.id%>/up">DOWN</a>
+					<a href="/answers/<%=a.id%>/edit">Edit</a>
+					<a href="/answers/<%=a.id%>/delete">Delete</a>
+					<br><br/>
+				<% end %>
+
+		<% end %>
+
+    
+
+  </body>
+
+</html>
+
+
+      

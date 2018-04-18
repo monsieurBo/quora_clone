@@ -1,0 +1,32 @@
+<html>
+
+  <head>
+
+    <title>Quora Clone</title>
+
+  </head>
+
+  <body>
+
+    <a href="/" style="text-decoration: none"><h1>Quora Clone</h1></a>
+
+   	<h3>Edit Answer</h3><br>
+
+		<form action="/answers/<%= @question.id %>/<%= @answer.id %>/edit" method="POST">
+			User<br>
+			<input name="username" value="<%=@answer.username%>"><br>
+			Answer<br>
+			<textarea name="answer" rows="10"><%=@answer.answer%></textarea><br>
+			<input type="submit">
+		</form>
+		<br/>
+		<a href="/questions/<%=@question.id%>">back</a>
+
+
+    
+
+  </body>
+
+</html>
+
+
