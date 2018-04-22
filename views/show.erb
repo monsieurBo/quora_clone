@@ -1,48 +1,35 @@
-<html>
-
-  <head>
-
-    <title>Quora Clone</title>
-
-  </head>
-
-  <body>
-
-    <a href="/" style="text-decoration: none"><h1>Quora Clone</h1></a>
-
-    <h3><%=@question.title%></h3>
+<h3><%=@question.title%></h3>
 
 
-		<%=@question.question%><br><br/>
-		<a href="/questions/<%=@question.id%>/edit">Edit</a>
-		<a href="/answers/<%=@question.id%>/answer">Answer</a>
+<p><%=@question.description%></p><br><br/>
+<p>posted by <%=User.find(@question.user_id).first_name%> <%=User.find(@question.user_id).last_name%> at <%=@question.created_at%><br/> 
 
-<!-- left_joins(:votes).group(:id).order('COUNT(votes.answer_id)') -->
+<a href="/questions/<%=@question.id%>/edit" class="btn btn-default">Edit</a>	
+<a href="#answer" class="btn btn-danger" data-toggle="collapse">Answer</a>
+<div id="answer" class="collapse">
+  <form action="/answers/<%=@question.id%>" method="POST">
+  	<input name="username" value="<%=@user.first_name%> <%=@user.last_name%>" style="display: none"><br>
+	  <input type="checkbox" aria-label="..." name="anonymous" value="Anonymous"> post as Anonymous <br/><br/>
+  	<textarea name="answer" rows="14"></textarea><br>
+  	<input type="submit">
+  </form>
+</div>
 
-		<%if @answers %>
-		<p><%= @answers.length %> Answers</p>
-		<hr>
-				<% @answers.left_joins(:votes).group(:id).order('COUNT(answer_id) DESC').each do | a | %>
-					<strong>Username</strong><br/>
-					<%= a.username %><%= a.created_at %><br/>
+<%if @answers %>
+	<p><%= @answers.length %> Answers</p>
+	<hr>
+	<% @answers.left_joins(:votes).group(:id).order('COUNT(updown) ASC').each do | a | %>
+		<strong>Username</strong><br/>
+		<%= a.username %><%= a.created_at %><br/>
 
-					<strong>Answer</strong><br/>
-					<%=a.answer%><br/>
-					<% votes = Vote.where(answer_id: a.id) %>
-					<a href="/answers/<%=a.id%>/up">UP | <%=votes.count%></a>
-					<a href="/answers/<%=a.id%>/up">DOWN</a>
-					<a href="/answers/<%=a.id%>/edit">Edit</a>
-					<a href="/answers/<%=a.id%>/delete">Delete</a>
-					<br><br/>
-				<% end %>
+		<strong>Answer</strong><br/>
+		<%=a.answer%><br/>
+		<% votes = Vote.where(updown: true) %>
+		<a href="/answers/<%=a.id%>/up">UP | <%=votes.where(answer_id: a.id).count%></a>
+		<a href="/answers/<%=a.id%>/down">DOWN</a>
+		<a href="/answers/<%=a.id%>/edit">Edit</a>
+		<a href="/answers/<%=a.id%>/delete">Delete</a>
+		<br><br/>
+	<% end %>
 
-		<% end %>
-
-    
-
-  </body>
-
-</html>
-
-
-      
+<% end %>

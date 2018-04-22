@@ -1,39 +1,12 @@
-<html>
+<% qs = Question.all %>
+<% id = qs.joins(:answers).group(:id) %>
+<% q = Question.where("id NOT IN (?)", id.ids) %>
 
-  <head>
-
-    <title>Quora Clone</title>
-
-  </head>
-
-  <body>
-
-    <a href="/" style="text-decoration: none"><h1>Quora Clone</h1></a>
-
-   <!--  <h3>Answer Question</h3> -->
-
-    <h3><%=@question.title%></h3>
+<% q.each do |q| %>
+  <h3><%=q.title%></h3>
 
 
-    <%=@question.question%><br><br/>
-    <!-- <h3>Answer</h3>
-    <hr>
- -->
-    <p><strong>Answer Question</strong></p>
-    <form action="/answers/<%=@question.id%>" method="POST">
-    	Username<br>
-    	<input name="username" value="Tentacles S."><br>
-    	Answer<br>
-    	<textarea name="answer" rows="10"></textarea><br>
-    	<input type="submit">
-    </form>
-      <a href="/questions/<%=@question.id%>">back</a>
-
-    
-
-  </body>
-
-</html>
-
-
+  <%=q.question%><br><br/>
+  <a href="/answers/<%=q.id%>/answer">Answer</a>
+<% end %>
 

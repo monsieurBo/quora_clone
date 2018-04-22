@@ -1,0 +1,93 @@
+<html>
+
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <style>
+    .add_question a:hover {
+        color: white !important;
+    }
+    </style>
+
+    <title>Quora Clone</title>
+
+  </head>
+
+  <body>
+    <% current_user %>
+    <% if logged_in? %>
+    <nav class="navbar navbar-default navbar-inverse">
+      <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/home">Quora.</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/home">Home <span class="sr-only">(current)</span></a></li>
+            <li><a href="/answer">Answer</a></li>
+            
+          
+          <form class="navbar-form navbar-left">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+          </form>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/questions/new" class="btn btn-danger add_question" >Add Question</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%=@user.first_name%> <%=@user.last_name%> <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="/signout">Sign Out</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li><a href="/signout">Sign Out</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+
+    
+
+    <% else %>
+      <p>A place to share knowledge and better understand the world</p>
+      <% end %> 
+
+    <!-- <div class="navigation">
+        <li id="header" style="list-style-type: none"><h1><a href="/" style="text-decoration: none">Quora.</a></h1></li>
+        <li id="navright" style="list-style-type: none"><a href="/" style="text-decoration: none">home</a></li>
+        <li style="list-style-type: none"><a href="/answer" style="text-decoration: none">answer</a></li>
+        <li style="list-style-type: none">
+          <form action="/questions/search" method="POST">
+            <input name="search" placeholder="Search...">
+          </form>
+        </li>
+        <li style="list-style-type: none"><a href="/questions/new" style="text-decoration: none">Add Question</a></li>
+        <li style="list-style-type: none"><a href="/users/signin" style="text-decoration: none">Sign In/Sign Up</a></li>
+    </div> -->
+
+    <div class="container">
+     <%= yield %>
+    </div>
+    
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+  </body>
+
+</html>

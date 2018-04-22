@@ -1,0 +1,9 @@
+<h2>Welcome <%=@user.first_name%> <%=@user.last_name%>!
+<br/><hr/>
+<% @questions.each do |q| %>
+	<h3><%= q.title %></h3>
+	<p><%= q.question %></p>
+	<a href="/questions/<%=q.id%>">view</a>
+  <!-- <a href="/answers/<%=q.id%>">Answer</a> -->
+	<a href="/questions/<%=q.id%>/delete">delete</a>
+<% end %>

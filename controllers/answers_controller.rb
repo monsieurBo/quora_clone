@@ -1,5 +1,3 @@
-
-
 get '/' do
 	@answers = Question.order("updated_at DESC")
 
@@ -7,14 +5,18 @@ get '/' do
 
 end
 
-get '/answers/:id/answer' do 
-	@question = Question.find(params[:id])
+get '/answer' do
 	erb :"/answers/answer"
-end 
+end
 
 post '/answers/:id' do
+	@user = User.find_by(scrambled_cookies: session[:scrambled_cookie])
 	@question = Question.find(params[:id])
-	@answer = Answer.create(answer: params[:answer],username: params[:username], question_id: params[:id], votes: 0)
+	if params[:anonymous] != nil
+		@answer = Answer.create(answer: params[:answer],username: params[:anonymous], question_id: params[:id], user_id: @user.id)
+	else
+		@answer = Answer.create(answer: params[:answer],username: params[:username], question_id: params[:id], user_id: @user.id)
+	end
 	redirect "/questions/#{@question.id}"
 end
 
@@ -36,7 +38,25 @@ get '/answers/:id/delete' do
 end
 
 get '/answers/:id/up' do
-	@votes = Vote.create(answer_id: params[:id])
-	@answer = Answer.find(params[:id])
-	redirect "/questions/#{@answer.question.id}"
+	@user = User.find_by(scrambled_cookies: session[:scrambled_cookie])
+	@votes = Vote.find_by(answer_id: params[:id], user_id: @user.id)
+	 if @votes != nil
+		@vote = Vote.find_by(user_id: @user.id)
+		@vote.update(updown: true)
+	else
+		Vote.create(answer_id: params[:id], user_id: @user.id, updown: true)
+	end
+  redirect "/questions/#{Answer.find(params[:id]).question.id}"
+end
+
+get '/answers/:id/down' do
+	@user = User.find_by(scrambled_cookies: session[:scrambled_cookie])
+	@votes = Vote.find_by(answer_id: params[:id], user_id: @user.id)
+	if @votes != nil
+		@vote = Vote.find_by(user_id: @user.id)
+		@vote.update(updown: false)
+	else
+		Vote.create(answer_id: params[:id], user_id: @user.id, updown: false)
+	end
+  redirect back
 end

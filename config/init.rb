@@ -22,16 +22,23 @@ require 'active_record'
 
 require 'sinatra'
 
-# require_relative 'controllers/questions_controller'
-# require_relative 'controllers/answers_controller'
+require 'sinatra/cookies'
 
-# use QuestionsController
-# run AnswersController
+require 'bcrypt'
+
+require 'byebug'
+
+configure do
+  enable :sessions unless test?
+  set :session_secret, "secret"
+end
 
 APP_ROOT = Pathname.new(File.expand_path('../../', __FILE__))
 
 set :views, File.join(APP_ROOT, "views")
+set :erb, layout: :'application'
 
 require APP_ROOT.join('config', 'database')
 
 Dir[APP_ROOT.join('controllers', '*.rb')].each { |file| require file }
+Dir[APP_ROOT.join('helpers', '*.rb')].each { |file| require file }

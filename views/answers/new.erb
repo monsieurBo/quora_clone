@@ -1,0 +1,22 @@
+ <h3><%=@question.title%></h3>
+
+
+    <%=@question.question%><br><br/>
+    <!-- <h3>Answer</h3>
+    <hr>
+ -->
+    <p><strong>Answer Question</strong></p>
+    <form action="/answers/<%=@question.id%>" method="POST">
+    	Username<br>
+    	<input name="username" value="<%=@user.first_name%> <%=@user.last_name%>"><br>
+    	Answer<br>
+    	<textarea name="answer" rows="10"></textarea><br>
+    	<input type="submit">
+    </form>
+      <a href="/questions/<%=@question.id%>">back</a>
+
+    
+
+  </body>
+
+
