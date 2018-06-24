@@ -58,5 +58,5 @@ get '/answers/:id/down' do
 	else
 		Vote.create(answer_id: params[:id], user_id: @user.id, updown: false)
 	end
-  redirect back
+  redirect "/questions/#{Answer.find(params[:id]).question.id}"
 end

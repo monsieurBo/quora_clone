@@ -1,7 +1,7 @@
 <html>
 
   <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <style>
     .add_question a:hover {
@@ -16,68 +16,82 @@
   <body>
     <% current_user %>
     <% if logged_in? %>
-    <nav class="navbar navbar-default navbar-inverse">
+    <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
       <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
+        <!-- <div class="navbar-header"> -->
+          
+          <a class="navbar-brand h1 text-danger font-weight-bold" href="/home">Quora.</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
           </button>
-          <a class="navbar-brand" href="/home">Quora.</a>
-        </div>
+        <!-- </div> -->
 
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="/home">Home <span class="sr-only">(current)</span></a></li>
-            <li><a href="/answer">Answer</a></li>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+            <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="/answer">Answer</a></li>
             
+            <form class="form-inline my-2 my-lg-0">
+              <input class="form-control mr-sm-2" type="search" placeholder="Search">
+              <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+            </form>
           
-          <form class="navbar-form navbar-left">
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="Search">
-            </div>
-            <button type="submit" class="btn btn-default">Submit</button>
-          </form>
           </ul>
+
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="/questions/new" class="btn btn-danger add_question" >Add Question</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%=@user.first_name%> <%=@user.last_name%> <span class="caret"></span></a>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="/signout">Sign Out</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li class="divider"></li>
-                <li><a href="/signout">Sign Out</a></li>
-              </ul>
+            <li class="nav-item"><a class="nav-link btn-danger" href="#" class="btn btn-danger add_question text-white" data-toggle="modal" data-target="#exampleModalCenter">Add Question</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <%=@user.first_name%> <%=@user.last_name%>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/signout">Sign Out</a>
+              </div>
             </li>
           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>
 
-    
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">Ask A Question</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="/questions" method="POST">
+              <div class="form-group">
+                <label for="exampleFormControlInput1">Title</label>
+                <input name="title" class="form-control" id="exampleFormControlInput1" placeholder="your title here">
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlTextarea1">Description</label>
+                <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="your description here"></textarea>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <% else %>
       <p>A place to share knowledge and better understand the world</p>
       <% end %> 
-
-    <!-- <div class="navigation">
-        <li id="header" style="list-style-type: none"><h1><a href="/" style="text-decoration: none">Quora.</a></h1></li>
-        <li id="navright" style="list-style-type: none"><a href="/" style="text-decoration: none">home</a></li>
-        <li style="list-style-type: none"><a href="/answer" style="text-decoration: none">answer</a></li>
-        <li style="list-style-type: none">
-          <form action="/questions/search" method="POST">
-            <input name="search" placeholder="Search...">
-          </form>
-        </li>
-        <li style="list-style-type: none"><a href="/questions/new" style="text-decoration: none">Add Question</a></li>
-        <li style="list-style-type: none"><a href="/users/signin" style="text-decoration: none">Sign In/Sign Up</a></li>
-    </div> -->
 
     <div class="container">
      <%= yield %>

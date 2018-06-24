@@ -2,11 +2,17 @@
 <% id = qs.joins(:answers).group(:id) %>
 <% q = Question.where("id NOT IN (?)", id.ids) %>
 
-<% q.each do |q| %>
-  <h3><%=q.title%></h3>
+<div class="card border-light mb-3" style="max-width: 50rem;">
+  <div class="card-header">
+    Questions for you
+  </div>
 
-
-  <%=q.question%><br><br/>
-  <a href="/answers/<%=q.id%>/answer">Answer</a>
-<% end %>
+  <% q.each do |q| %>
+    <div class="card-body">
+      <h5 class="card-title"><%=q.title%></h5>
+      <p class="card-text"><%=q.question%></p>
+      <a href="/answers/<%=q.id%>/answer" class="btn btn-primary">Answer</a>
+    </div>
+  <% end %>
+</div>
 

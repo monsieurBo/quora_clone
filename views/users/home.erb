@@ -1,9 +1,17 @@
 <h2>Welcome <%=@user.first_name%> <%=@user.last_name%>!
 <br/><hr/>
-<% @questions.each do |q| %>
-	<h3><%= q.title %></h3>
-	<p><%= q.question %></p>
-	<a href="/questions/<%=q.id%>">view</a>
-  <!-- <a href="/answers/<%=q.id%>">Answer</a> -->
-	<a href="/questions/<%=q.id%>/delete">delete</a>
-<% end %>
+
+<div class="card border-secondary mb-3">
+  <div class="card-header">
+    Top Questions
+  </div>
+
+  <% @questions.each do |q| %>
+    <div class="card-body">
+      <h5 class="card-title"><%=q.title%></h5>
+      <p class="card-text"><%=q.question%></p>
+      <a href="/questions/<%=q.id%>" class="btn btn-default btn-sm">View</a>
+    </div>
+    <hr/>
+  <% end %>
+</div>

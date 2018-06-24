@@ -2,34 +2,60 @@
 
 
 <p><%=@question.description%></p><br><br/>
-<p>posted by <%=User.find(@question.user_id).first_name%> <%=User.find(@question.user_id).last_name%> at <%=@question.created_at%><br/> 
+<p>posted by <%=User.find(@question.user_id).first_name%> <%=User.find(@question.user_id).last_name%> at <%=@question.created_at%><br/>
 
-<a href="/questions/<%=@question.id%>/edit" class="btn btn-default">Edit</a>	
-<a href="#answer" class="btn btn-danger" data-toggle="collapse">Answer</a>
+<% if @user.id == @question.user_id %>
+	<a href="/questions/<%=@question.id%>/edit" class="btn btn-default">Edit</a>	
+	<a href="/questions/<%=@question.id%>/delete" class="btn btn-default">Delete</a>	
+<% else %>
+	<a class="btn btn-danger" data-toggle="collapse" href="#answer" role="button" aria-expanded="false" aria-controls="collapseExample">
+    Answer
+  </a>
+<% end %>
+
 <div id="answer" class="collapse">
-  <form action="/answers/<%=@question.id%>" method="POST">
-  	<input name="username" value="<%=@user.first_name%> <%=@user.last_name%>" style="display: none"><br>
-	  <input type="checkbox" aria-label="..." name="anonymous" value="Anonymous"> post as Anonymous <br/><br/>
-  	<textarea name="answer" rows="14"></textarea><br>
-  	<input type="submit">
+
+	<form action="/answers/<%=@question.id%>" method="POST">
+		<input name="username" value="<%=@user.first_name%> <%=@user.last_name%>" style="display: none">
+    <div class="form-group form-check">
+	    <input type="checkbox" class="form-check-input" id="exampleCheck1" name="anonymous" value="Anonymous">
+	    <label class="form-check-label" for="exampleCheck1">Post as Anonymous</label>
+	  </div>
+    <div class="form-group">
+      <textarea name="answer" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="your answer here"></textarea>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Save changes</button>
+    </div>
   </form>
 </div>
 
 <%if @answers %>
-	<p><%= @answers.length %> Answers</p>
+	<h5><%= @answers.length %> Answers</h5>
 	<hr>
-	<% @answers.left_joins(:votes).group(:id).order('COUNT(updown) ASC').each do | a | %>
-		<strong>Username</strong><br/>
-		<%= a.username %><%= a.created_at %><br/>
+	<% @answers.left_joins(:votes).group(:id).order('COUNT(updown) DESC').each do | a | %>
+		
+		<div class="card shadow-sm">
+			<div class="card-header">
+			  <%= a.username %> Answered <%= a.created_at %>
+		  </div>
+		  <div class="card-body">
+			  <p class="card-text"><%=a.answer%></p>
 
-		<strong>Answer</strong><br/>
-		<%=a.answer%><br/>
-		<% votes = Vote.where(updown: true) %>
-		<a href="/answers/<%=a.id%>/up">UP | <%=votes.where(answer_id: a.id).count%></a>
-		<a href="/answers/<%=a.id%>/down">DOWN</a>
-		<a href="/answers/<%=a.id%>/edit">Edit</a>
-		<a href="/answers/<%=a.id%>/delete">Delete</a>
-		<br><br/>
+			<% votes = Vote.where(updown: true) %>
+			<% if @user.id != @question.user_id %>
+					<a href="/answers/<%=a.id%>/up" class="btn btn-outline-secondary btn-sm">UP | <%=votes.where(answer_id: a.id).count%></a>
+					<a href="/answers/<%=a.id%>/down" class="btn btn-default btn-sm">DOWN</a>
+					<% if @user.id == a.user_id %>
+						<a href="/answers/<%=a.id%>/edit" class="btn btn-default btn-sm">Edit</a>
+						<a href="/answers/<%=a.id%>/delete" class="btn btn-default btn-sm">Delete</a>
+					<% end %>
+	 			</div>
+			<% else %>
+					<a href="#" class="btn btn-default btn-sm">UP | <%=votes.where(answer_id: a.id).count%></a>
+	 			</div>
+			<% end %>
+		</div><br/>
 	<% end %>
 
 <% end %>
